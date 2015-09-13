@@ -2,25 +2,31 @@
 
 'use strict';
 
-var path = require('path');
-var fs = require('fs');
+const path = require('path');
+const fs = require('fs');
+const config = require('./config.js');
 
-// Read configuration from configuration file
-var config = require('./config.js');
+// ============================================================================
+// 1. Parse entry html
+// ============================================================================
 
-var entryHtml = fs.readFileSync(config.entryFile);
-var $ = require('cheerio').load(entryHtml, {
-  decodeEntities: false
-});
+const entryHtml = fs.readFileSync(config.entryFile);
+const $ = require('cheerio').load(entryHtml, {decodeEntities: false});
 
-// Load packers
-var htmlPacker = require('./html-packer.js');
-var jsPacker = require('./js-packer.js');
-var cssPacker = require('./css-packer.js');
+// ============================================================================
+// 2. Pack everything.
+// ============================================================================
 
-// Pack stuff
-htmlPacker.packHtml($, config);
-jsPacker.packJS($, config);
-cssPacker.packCss($, config);
+const htmlPacker = require('./packers/html-packer.js');
+const jsPacker = require('./packers/js-packer.js');
+const cssPacker = require('./packers/css-packer.js');
+
+htmlPacker.pack($, config);
+jsPacker.pack($, config);
+cssPacker.pack($, config);
+
+// ============================================================================
+// 3. Write output files.
+// ============================================================================
 
 fs.writeFileSync(config.outputFile, $.html());

@@ -15,6 +15,10 @@
   "homepage": "https://github.com/qrop/webq#readme",
   "dependencies": {
     "browserify": "^11.0.1",
-    "cheerio": "^0.19.0"
+    "cheerio": "^0.19.0",
+    "css-import": "0.0.1"
+  },
+  "engines": {
+    "node": "4.x.x"
   }
 }
